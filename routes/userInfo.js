@@ -103,4 +103,29 @@ router.post('/:email/dailyReset', async (req, res) => {
         res.status(400).send(err)
     }
 })
+
+router.post('/:email/addQuote', async (req, res) => {
+    const quote = {
+        title: req.body.title,
+        page: req.body.page,
+        quote: req.body.quote,
+    }
+
+    const user = await User.findOne({ email: req.params.email })
+
+    try {
+        user.quotes.push(quote)
+        user.save()
+        res.send({ sent: true })
+    } catch (err) {
+        res.status(400).send(err)
+    }
+})
+
+router.get('/:email/getAllQuotes', async (req, res) => {
+    const user = await User.findOne({ email: req.params.email })
+
+    res.send(user.quotes)
+})
+
 module.exports = router
