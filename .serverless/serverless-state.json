@@ -177,7 +177,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-nodejs-app/production/1659544328984-2022-08-03T16:32:08.984Z/serverless-nodejs-app.zip"
+                "S3Key": "serverless/serverless-nodejs-app/production/1659612904869-2022-08-04T11:35:04.869Z/serverless-nodejs-app.zip"
               },
               "Handler": "app/app.handler",
               "Runtime": "nodejs12.x",
@@ -201,14 +201,14 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersionHsVWN3gHTQTajsKi7D9hyu70Q3iQEZ0C9epX4xWI": {
+          "AppLambdaVersionq38Wgvqk8gPeVER51uqxpKgwY6UWxPl8I4X4MvIPC4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "FY8zMBYyaqLXbF6ctUpOAwrQoYUaqRi2pU3ZR9nkCOg="
+              "CodeSha256": "JiQEVl88kOfRhZkmAVlUAmMl9T19S6WzYa5xq2FAAcI="
             }
           },
           "ApiGatewayRestApi": {
@@ -426,7 +426,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1659544327864": {
+          "ApiGatewayDeployment1659612903697": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -491,7 +491,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersionHsVWN3gHTQTajsKi7D9hyu70Q3iQEZ0C9epX4xWI"
+              "Ref": "AppLambdaVersionq38Wgvqk8gPeVER51uqxpKgwY6UWxPl8I4X4MvIPC4"
             },
             "Export": {
               "Name": "sls-serverless-nodejs-app-production-AppLambdaFunctionQualifiedArn"
@@ -675,7 +675,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersionHsVWN3gHTQTajsKi7D9hyu70Q3iQEZ0C9epX4xWI"
+        "versionLogicalId": "AppLambdaVersionq38Wgvqk8gPeVER51uqxpKgwY6UWxPl8I4X4MvIPC4"
       }
     },
     "configValidationMode": "warn",
@@ -697,7 +697,7 @@
     "artifact": "/Users/jimmyneville/Projects/jimmyfitness/fitness-app-backend/.serverless/serverless-nodejs-app.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/serverless-nodejs-app/production/1659544328984-2022-08-03T16:32:08.984Z",
+    "artifactDirectoryName": "serverless/serverless-nodejs-app/production/1659612904869-2022-08-04T11:35:04.869Z",
     "artifact": "serverless-nodejs-app.zip"
   }
 }

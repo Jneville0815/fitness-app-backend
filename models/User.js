@@ -118,6 +118,11 @@ const UserSchema = mongoose.Schema({
                 max: 1000,
                 min: 1
             },
+            num_views: {
+                type: Number,
+                required: false,
+                default: 0
+            },
             date: {
                 type: Date,
                 default: Date.now,
