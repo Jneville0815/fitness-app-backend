@@ -19,3 +19,4 @@ functions:
           path: /{proxy+}
           method: ANY
           cors: true
+          
