@@ -127,4 +127,19 @@ router.get('/:email/getAllQuotes', async (req, res) => {
     res.send(user.quotes)
 })
 
+router.get('/:email/getQuote', async (req, res) => {
+    const user = await User.findOne({ email: req.params.email })
+
+    user.quotes.sort((a, b) => a.num_views - b.num_views)
+
+    user.quotes[0].num_views += 1
+
+    try {
+        user.save()
+        res.send(user.quotes[0])
+    } catch (err) {
+        res.status(400).send(err)
+    }
+})
+
 module.exports = router
