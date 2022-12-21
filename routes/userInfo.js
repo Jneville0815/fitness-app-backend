@@ -106,8 +106,7 @@ router.post('/:email/dailyReset', async (req, res) => {
 
 router.post('/:email/addQuote', async (req, res) => {
     const quote = {
-        title: req.body.title,
-        page: req.body.page,
+        source: req.body.source,
         quote: req.body.quote,
     }
 

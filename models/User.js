@@ -100,35 +100,29 @@ const UserSchema = mongoose.Schema({
     ],
     quotes: [
         {
-            title: {
+            source: {
                 type: String,
                 required: true,
                 max: 100,
                 min: 1,
             },
-            page: {
-                type: Number,
-                required: true,
-                max: 5000,
-                min: 1
-            },
             quote: {
                 type: String,
                 required: true,
                 max: 1000,
-                min: 1
+                min: 1,
             },
             num_views: {
                 type: Number,
                 required: false,
-                default: 0
+                default: 0,
             },
             date: {
                 type: Date,
                 default: Date.now,
-            }
-        }
-    ]
+            },
+        },
+    ],
 })
 
 module.exports = mongoose.model('User', UserSchema)
