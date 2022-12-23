@@ -127,7 +127,7 @@ router.get('/:id/getAllQuotes', async (req, res) => {
     res.send(user.quotes)
 })
 
-router.get('/:id/getQuote', async (req, res) => {
+router.get('/:id/getQuote', verify, async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
 
     user.quotes.sort((a, b) => a.num_views - b.num_views)
