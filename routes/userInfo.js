@@ -3,22 +3,22 @@ const { Mongoose } = require('mongoose')
 const User = require('../models/User')
 const verify = require('./verifyToken')
 
-router.get('/:email', verify, async (req, res) => {
+router.get('/:id', verify, async (req, res) => {
     const user = await User.findOne(
-        { email: req.params.email },
+        { _id: req.params.id },
         { password: 0 } // don't retrieve password
     )
     res.send(user)
 })
 
-router.get('/:email/fitness', verify, async (req, res) => {
-    const user = await User.findOne({ email: req.params.email })
+router.get('/:id/fitness', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
 
     res.send(user.fitness)
 })
 
-router.post('/:email/fitness', async (req, res) => {
-    const user = await User.findOne({ email: req.params.email })
+router.post('/:id/fitness', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
 
     try {
         user.fitness.benchMax = req.body.benchMax
@@ -32,7 +32,7 @@ router.post('/:email/fitness', async (req, res) => {
     }
 })
 
-router.post('/:email/addFood', async (req, res) => {
+router.post('/:id/addFood', verify, async (req, res) => {
     const food = {
         name: req.body.name,
         protein: req.body.protein,
@@ -41,7 +41,7 @@ router.post('/:email/addFood', async (req, res) => {
         information: req.body.information,
     }
 
-    const user = await User.findOne({ email: req.params.email })
+    const user = await User.findOne({ _id: req.params.id })
 
     try {
         user.food.push(food)
@@ -52,7 +52,7 @@ router.post('/:email/addFood', async (req, res) => {
     }
 })
 
-router.post('/:email/addCurrentFood', async (req, res) => {
+router.post('/:id/addCurrentFood', verify, async (req, res) => {
     const food = {
         name: req.body.name,
         protein: req.body.protein,
@@ -61,7 +61,7 @@ router.post('/:email/addCurrentFood', async (req, res) => {
         information: req.body.information,
     }
 
-    const user = await User.findOne({ email: req.params.email })
+    const user = await User.findOne({ _id: req.params.id })
 
     try {
         user.currentFood.push(food)
@@ -75,8 +75,8 @@ router.post('/:email/addCurrentFood', async (req, res) => {
     }
 })
 
-router.post('/:email/removeCurrentFood', async (req, res) => {
-    const user = await User.findOne({ email: req.params.email })
+router.post('/:id/removeCurrentFood', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
     try {
         let i = user.currentFood.findIndex((x) => x.name === req.body.name)
         user.currentFood.splice(i, 1)
@@ -90,8 +90,8 @@ router.post('/:email/removeCurrentFood', async (req, res) => {
     }
 })
 
-router.post('/:email/dailyReset', async (req, res) => {
-    const user = await User.findOne({ email: req.params.email })
+router.post('/:id/dailyReset', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
     try {
         user.currentFood = []
         user.nutrition['currentProtein'] = 0
@@ -104,13 +104,13 @@ router.post('/:email/dailyReset', async (req, res) => {
     }
 })
 
-router.post('/:email/addQuote', async (req, res) => {
+router.post('/:id/addQuote', verify, async (req, res) => {
     const quote = {
         source: req.body.source,
         quote: req.body.quote,
     }
 
-    const user = await User.findOne({ email: req.params.email })
+    const user = await User.findOne({ _id: req.params.id })
 
     try {
         user.quotes.push(quote)
@@ -121,14 +121,14 @@ router.post('/:email/addQuote', async (req, res) => {
     }
 })
 
-router.get('/:email/getAllQuotes', async (req, res) => {
-    const user = await User.findOne({ email: req.params.email })
+router.get('/:id/getAllQuotes', async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
 
     res.send(user.quotes)
 })
 
-router.get('/:email/getQuote', async (req, res) => {
-    const user = await User.findOne({ email: req.params.email })
+router.get('/:id/getQuote', async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
 
     user.quotes.sort((a, b) => a.num_views - b.num_views)
 
