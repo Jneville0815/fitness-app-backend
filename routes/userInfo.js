@@ -127,7 +127,7 @@ router.get('/:id/getAllQuotes', async (req, res) => {
     res.send(user.quotes)
 })
 
-router.get('/:id/getQuote', verify, async (req, res) => {
+router.get('/:id/getQuote', async (req, res) => {
     const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
@@ -145,9 +145,10 @@ router.get('/:id/getQuote', verify, async (req, res) => {
     let foundOne = false
 
     while (pointer < user.quotes.length) {
-        if (user.quotes[pointer] === 0) {
+        if (user.quotes[pointer].num_views === 0) {
             user.quotes[pointer].num_views = 1
             foundOne = true
+            break
         }
         pointer += 1
     }
