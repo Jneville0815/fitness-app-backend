@@ -56,7 +56,7 @@ router.post('/:id/removeFood/:food_name', verify, async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
 
     try {
-        let i = user.food.findIndex((x) => x.name === req.params.name)
+        let i = user.food.findIndex((x) => x.name === req.params.food_name)
         user.food.splice(i, 1)
         user.save()
         res.send({ sent: true })
