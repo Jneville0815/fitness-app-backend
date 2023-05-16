@@ -140,7 +140,7 @@ router.get('/:id/getAllQuotes', async (req, res) => {
     res.send(user.quotes)
 })
 
-router.get('/:id/getQuote', async (req, res) => {
+router.get('/:id/getQuote', verify, async (req, res) => {
     const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
@@ -154,27 +154,9 @@ router.get('/:id/getQuote', async (req, res) => {
 
     shuffleArray(user.quotes)
 
-    let pointer = 0
-    let foundOne = false
-
-    while (pointer < user.quotes.length) {
-        if (user.quotes[pointer].num_views === 0) {
-            user.quotes[pointer].num_views = 1
-            foundOne = true
-            break
-        }
-        pointer += 1
-    }
-
-    if (foundOne === false) {
-        for (let i = 0; i < user.quotes.length; i++) {
-            user.quotes[i].num_views = 0
-        }
-    }
-
     try {
         user.save()
-        res.send(user.quotes[pointer])
+        res.send(user.quotes[0])
     } catch (err) {
         res.status(400).send(err)
     }
