@@ -1,7 +1,7 @@
 service: serverless-nodejs-app
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs18.x
   stage: production
   region: us-east-1
   environment: # add environment property
