@@ -141,22 +141,44 @@ router.get('/:id/getAllQuotes', async (req, res) => {
 })
 
 router.get('/:id/getQuote', verify, async (req, res) => {
-    const shuffleArray = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1))
-            const temp = array[i]
-            array[i] = array[j]
-            array[j] = temp
+    function getRandomObject(arr) {
+        if (arr.length === 0) {
+            return null
+        }
+        return Math.floor(Math.random() * arr.length);
+    }
+
+    function getMedianOfViews(quotes) {
+        if (quotes.length === 0) {
+            return null
+        }
+        const views = quotes.map(quote => quote.num_views);
+
+        const sortedViews = views.sort((a, b) => a - b);
+
+        const middleIndex = Math.floor(sortedViews.length / 2);
+        if (sortedViews.length % 2 === 0) {
+            return (sortedViews[middleIndex - 1] + sortedViews[middleIndex]) / 2;
+        } else {
+            return sortedViews[middleIndex];
         }
     }
 
     const user = await User.findOne({ _id: req.params.id })
 
-    shuffleArray(user.quotes)
+    const median = getMedianOfViews(user.quotes)
+    let i = 0
+    while(true) {
+        i = getRandomObject(user.quotes)
+        if(user.quotes[i].num_views < median) {
+            break
+        }
+    }
 
     try {
+        user.quotes[i].num_views += 1
         user.save()
-        res.send(user.quotes[0])
+        res.send(user.quotes[i])
     } catch (err) {
         res.status(400).send(err)
     }
