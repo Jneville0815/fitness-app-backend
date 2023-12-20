@@ -167,10 +167,11 @@ router.get('/:id/getQuote', verify, async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
 
     const median = getMedianOfViews(user.quotes)
+
     let i = 0
     while(true) {
         i = getRandomObject(user.quotes)
-        if(user.quotes[i].num_views < median) {
+        if(user.quotes[i].num_views <= median) {
             break
         }
     }
