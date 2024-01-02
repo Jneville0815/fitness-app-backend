@@ -118,12 +118,15 @@ router.post('/:id/dailyReset', verify, async (req, res) => {
 })
 
 router.post('/:id/addQuote', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+
+    const views = user.quotes.map(quote => quote.num_views)
+
     const quote = {
         source: req.body.source,
         quote: req.body.quote,
+        num_views: Math.max(...views)
     }
-
-    const user = await User.findOne({ _id: req.params.id })
 
     try {
         user.quotes.push(quote)
