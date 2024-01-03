@@ -2,6 +2,11 @@ const router = require('express').Router()
 const { Mongoose } = require('mongoose')
 const User = require('../models/User')
 const verify = require('./verifyToken')
+const { OpenAI } = require('openai')
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 
 router.get('/:id', verify, async (req, res) => {
     const user = await User.findOne(
@@ -143,7 +148,7 @@ router.get('/:id/getAllQuotes', async (req, res) => {
     res.send(user.quotes)
 })
 
-router.get('/:id/getQuote', verify, async (req, res) => {
+router.get('/:id/getQuote', async (req, res) => {
     function getRandomObject(arr) {
         if (arr.length === 0) {
             return null
@@ -167,24 +172,42 @@ router.get('/:id/getQuote', verify, async (req, res) => {
         }
     }
 
-    const user = await User.findOne({ _id: req.params.id })
+    async function chatgptQuote() {
+        const quotes = user.quotes.map(quote => `${quote.source}: ${quote.quote}`)
 
-    const median = getMedianOfViews(user.quotes)
+        const completion = await openai.chat.completions.create({
+            messages: [{ role: "system", content: "Given this string of quotes where the format is `SOURCE: QUOTE\n`, give me an original quote that's related to all of the other quotes. There is no need to add a SOURCE. Max of 80 characters" }, {role: "user", content: quotes.join("\n")}],
+            model: "gpt-4",
+        });
 
-    let i = 0
-    while(true) {
-        i = getRandomObject(user.quotes)
-        if(user.quotes[i].num_views <= median) {
-            break
-        }
+        return completion.choices[0].message.content
     }
 
-    try {
-        user.quotes[i].num_views += 1
-        user.save()
-        res.send(user.quotes[i])
-    } catch (err) {
-        res.status(400).send(err)
+    const user = await User.findOne({ _id: req.params.id })
+
+    if(false) {
+        const median = getMedianOfViews(user.quotes)
+        let i = 0
+        while(true) {
+            i = getRandomObject(user.quotes)
+            if(user.quotes[i].num_views <= median) {
+                break
+            }
+        }
+
+        try {
+            user.quotes[i].num_views += 1
+            user.save()
+            res.send(user.quotes[i])
+        } catch (err) {
+            res.status(400).send(err)
+        }
+    } else {
+        try {
+            chatgptQuote().then(data => res.send({source: "ChatGPT", quote: data}))
+        } catch (err) {
+            res.status(400).send(err)
+        }
     }
 })
 

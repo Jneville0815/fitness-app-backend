@@ -7,6 +7,7 @@ provider:
   environment: # add environment property
     DB_CONNECTION: ${ssm:/FITNESS_APP_BACKEND_DB_CONNECTION}
     TOKEN_SECRET: ${ssm:/FITNESS_APP_BACKEND_TOKEN_SECRET}
+    OPENAI_API_KEY: ${ssm:/FITNESS_APP_BACKEND_OPENAI_API_KEY}
 functions:
   app:
     handler: app/app.handler # reference the file and exported method
