@@ -16,6 +16,14 @@ router.get('/:id', verify, async (req, res) => {
     res.send(user)
 })
 
+router.get('/:id/emailAndName', verify, async (req, res) => {
+    const user = await User.findOne(
+        { _id: req.params.id },
+        { password: 0 } // don't retrieve password
+    )
+    res.send({name: user.name, email: user.email})
+})
+
 router.get('/:id/fitness', verify, async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
 
