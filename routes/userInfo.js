@@ -142,13 +142,27 @@ router.post('/:id/addQuote', verify, async (req, res) => {
     }
 })
 
-router.get('/:id/getAllQuotes', async (req, res) => {
+router.get('/:id/getAllQuotes', verify, async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
 
     res.send(user.quotes)
 })
 
-router.get('/:id/getQuote', async (req, res) => {
+router.delete('/:id/deleteQuote/:quoteId', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+    const quoteId = req.params.quoteId
+
+    try {
+        let i = user.quotes.findIndex((x) => x._id.toString() === quoteId)
+        user.quotes.splice(i, 1)
+        user.save()
+        res.send({ sent: true })
+    } catch (err) {
+        res.status(400).send(err)
+    }
+})
+
+router.get('/:id/getQuote', verify, async (req, res) => {
     function getRandomObject(arr) {
         if (arr.length === 0) {
             return null
@@ -185,7 +199,7 @@ router.get('/:id/getQuote', async (req, res) => {
 
     const user = await User.findOne({ _id: req.params.id })
 
-    if(Math.random() > 0.25) {
+    if(Math.random() > 0.10) {
         const median = getMedianOfViews(user.quotes)
         let i = 0
         while(true) {
