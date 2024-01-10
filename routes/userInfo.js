@@ -27,7 +27,12 @@ router.get('/:id/emailAndName', verify, async (req, res) => {
 router.get('/:id/fitness', verify, async (req, res) => {
     const user = await User.findOne({ _id: req.params.id })
 
-    res.send(user.fitness)
+    res.send({
+        benchMax: user.fitness.benchMax,
+        deadliftMax: user.fitness.deadliftMax,
+        squatMax: user.fitness.squatMax,
+        pressMax: user.fitness.pressMax
+    })
 })
 
 router.post('/:id/fitness', verify, async (req, res) => {
@@ -38,6 +43,24 @@ router.post('/:id/fitness', verify, async (req, res) => {
         user.fitness.deadliftMax = req.body.deadliftMax
         user.fitness.squatMax = req.body.squatMax
         user.fitness.pressMax = req.body.pressMax
+        user.save()
+        res.send({ sent: true })
+    } catch (err) {
+        res.status(400).send(err)
+    }
+})
+
+router.get('/:id/fitness/currentDay', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+
+    res.send({currentDay: user.fitness.currentDay})
+})
+
+router.post('/:id/fitness/currentDay', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+
+    try {
+        user.fitness.currentDay = req.body.currentDay
         user.save()
         res.send({ sent: true })
     } catch (err) {

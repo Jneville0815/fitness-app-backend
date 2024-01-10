@@ -59,6 +59,11 @@ const UserSchema = mongoose.Schema({
         },
     },
     fitness: {
+        currentDay: {
+            type: Number,
+            required: false,
+            default: 0,
+        },
         benchMax: {
             type: Number,
             required: false,
