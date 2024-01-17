@@ -68,6 +68,24 @@ router.post('/:id/fitness/currentDay', verify, async (req, res) => {
     }
 })
 
+router.get('/:id/fitness/note', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+
+    res.send({note: user.fitness.note})
+})
+
+router.post('/:id/fitness/note', verify, async (req, res) => {
+    const user = await User.findOne({ _id: req.params.id })
+
+    try {
+        user.fitness.note = req.body.note
+        user.save()
+        res.send({ sent: true })
+    } catch (err) {
+        res.status(400).send(err)
+    }
+})
+
 router.post('/:id/addFood', verify, async (req, res) => {
     const food = {
         name: req.body.name,

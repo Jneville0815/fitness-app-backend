@@ -84,6 +84,11 @@ const UserSchema = mongoose.Schema({
             required: false,
             default: 0,
         },
+        note: {
+            type: String,
+            required: false,
+            default: "",
+        }
     },
     food: [
         {
