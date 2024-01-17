@@ -5,9 +5,6 @@ const registerValidation = (data) => {
         email: Joi.string().min(6).required().email(),
         password: Joi.string().min(8).required(),
         name: Joi.string(),
-        targetProtein: Joi.number(),
-        targetCarbs: Joi.number(),
-        targetFat: Joi.number(),
     })
     return schema.validate(data)
 }

@@ -5,7 +5,7 @@ const cors = require('cors')
 require('dotenv/config')
 const app = express()
 
-const localTesting = false
+const localTesting = true
 
 // Connect to DB:
 mongoose.connect(
